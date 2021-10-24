@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postman
+    username: postgres
+    password: postgresql1607
+
+server:
+  servlet:
+    context-path: /post-office
