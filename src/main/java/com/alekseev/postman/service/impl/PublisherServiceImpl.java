@@ -38,6 +38,7 @@ public class PublisherServiceImpl implements PublisherService {
 
     @Override
     public List<Publisher> getPublishers() {
+        List<Publisher> publishers = publisherRepository.findAllPublishers();
         return publisherRepository.findAllPublishers();
     }
 

@@ -1,15 +1,15 @@
 package com.alekseev.postman.controller;
 
 import com.alekseev.postman.model.Publication;
+import com.alekseev.postman.model.Publisher;
 import com.alekseev.postman.service.PublicationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/publications")
+//@RequestMapping("/publications")
 public class PublicationController {
 
     private final PublicationService publicationService;
@@ -19,9 +19,25 @@ public class PublicationController {
         this.publicationService = publicationService;
     }
 
-    @GetMapping("/{id}")
-    public Publication getPublication(@PathVariable long id) {
+    @GetMapping("/publications/{id}")
+    public Publication getPublicationById(@PathVariable long id) {
         return publicationService.getPublication(id);
+    }
+
+    @GetMapping("/publishers/{publisherId}/publications")
+    public List<Publication> getPublicationsByPublisher(@PathVariable long publisherId) {
+        return publicationService.getPublicationsByPublisher(publisherId);
+    }
+
+    @PostMapping("/publishers/{publisherId}/publications")
+    public void createPublication(@PathVariable long publisherId, @RequestBody Publication publication) {
+        publication.setPublisher(new Publisher(publisherId));
+        publicationService.addPublication(publication);
+    }
+
+    @PutMapping
+    public void updatePublication(@RequestBody Publication publication) {
+        publicationService.updatePublication(publication);
     }
 
 }

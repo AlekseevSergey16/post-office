@@ -21,7 +21,7 @@ public class PublicationRepository {
 
     public long insert(String name, String about, double cost, int pages, int weight, long publisherId) {
         final String sql = """
-                INSERT INTO publication (name, about, cost, pages, weight, publisher_id)
+                INSERT INTO publication (publication_name, about, cost, pages, weight, publisher_id)
                 VALUES (:name, :about, :cost, :pages, :weight, :publisherId)
                 """;
         var params = new MapSqlParameterSource()
@@ -41,7 +41,7 @@ public class PublicationRepository {
 
     public void update(long id, String name, String about, double cost, int pages, int weight) {
         final String sql = """
-                UPDATE publication SET name = :name, about = :about, cost = :cost, pages = :pages, weight = :weight
+                UPDATE publication SET publication_name = :name, about = :about, cost = :cost, pages = :pages, weight = :weight
                 WHERE id = :id
                 """;
         var params = new MapSqlParameterSource()
@@ -58,13 +58,13 @@ public class PublicationRepository {
     public Optional<Publication> findById(long id) {
         final String sql = """
             SELECT publication.id AS publication_id,
-                   publication.name AS publication_name,
+                   publication_name,
                    publication.about,
                    publication.cost,
                    publication.pages,
                    publication.weight,
                    publisher.id AS publisher_id,
-                   publisher.name AS publisher_name,
+                   publisher.publisher_name,
                    publisher.phone,
                    publisher.email,
                    publisher.information

@@ -22,7 +22,7 @@ public class PublisherRepository {
     }
 
     public long insert(String name, String phone, String email, String information) {
-        final String sql = "INSERT INTO publisher (name, phone, email, information) VALUES (:name, :phone, :email, :information)";
+        final String sql = "INSERT INTO publisher (publisher_name, phone, email, information) VALUES (:name, :phone, :email, :information)";
 
         var params = new MapSqlParameterSource()
                 .addValue("name", name)
@@ -38,8 +38,8 @@ public class PublisherRepository {
     }
 
     public void update(Long id, String name, String phone, String email, String information) {
-        final String sql = "UPDATE publisher SET name = :name, phone = :phone, email = :email, information = :information "
-                         + "WHERE id = ?5";
+        final String sql = "UPDATE publisher SET publisher_name = :name, phone = :phone, email = :email, information = :information "
+                         + "WHERE id = :id";
 
         var params = new MapSqlParameterSource()
                 .addValue("id", id)
@@ -53,7 +53,7 @@ public class PublisherRepository {
 
     public Optional<Publisher> findById(long id) {
         final String sql = """
-                    SELECT id AS publisher_id, name AS publisher_name, phone, email, information
+                    SELECT id AS publisher_id, publisher_name AS publisher_name, phone, email, information
                     FROM publisher
                     WHERE id = ?;
                     """;
@@ -63,7 +63,7 @@ public class PublisherRepository {
 
     public List<Publisher> findAllPublishers() {
         final String sql = """
-                SELECT id AS publisher_id, name AS publisher_name, phone, email, information
+                SELECT id AS publisher_id, publisher_name AS publisher_name, phone, email, information
                 FROM publisher
                 """;
         return jdbcTemplate.query(sql, PublisherMapper.MAPPER);
