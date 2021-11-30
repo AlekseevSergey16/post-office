@@ -3,11 +3,12 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/postman
     username: postgres
-    password: postgresql1607
-  mvc:
-    static-path-pattern: /static/**
+    password:
 
-#  servlet:
-#    context-path: /post-office
+#  mvc:
+#    static-path-pattern: /static/**
+#    template
+#  jooq:
+#    sql-dialect: POSTGRES
 
 

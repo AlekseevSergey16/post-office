@@ -9,9 +9,10 @@ public class Subscription {
 
     private Long id;
 
+    private Integer numberOfMonths;
+
     private LocalDate startDate;
     private LocalDate endDate;
-    private Integer numberOfMonths;
 
     private Subscriber subscriber;
 

@@ -20,8 +20,7 @@ public class PublicationServiceImpl implements PublicationService {
 
     @Override
     public void addPublication(Publication publication) {
-        publicationRepository.insert(publication.getName(), publication.getAbout(), publication.getCost(),
-                publication.getPages(), publication.getWeight(), publication.getPublisher().getId());
+        publicationRepository.insert(publication);
     }
 
     @Override
@@ -37,6 +36,11 @@ public class PublicationServiceImpl implements PublicationService {
 
     @Override
     public List<Publication> getPublicationsByPublisher(long publisherId) {
-        return null;
+        return publicationRepository.findByPublisherId(publisherId);
+    }
+
+    @Override
+    public List<Publication> getPublications() {
+        return publicationRepository.findAll();
     }
 }

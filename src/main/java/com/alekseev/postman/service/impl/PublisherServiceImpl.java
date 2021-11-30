@@ -20,8 +20,7 @@ public class PublisherServiceImpl implements PublisherService {
 
     @Override
     public void addPublisher(Publisher publisher) {
-        publisherRepository.insert(publisher.getName(), publisher.getPhone(),
-                publisher.getEmail(), publisher.getInformation());
+        publisherRepository.insert(publisher);
     }
 
     @Override
@@ -39,7 +38,7 @@ public class PublisherServiceImpl implements PublisherService {
     @Override
     public List<Publisher> getPublishers() {
         List<Publisher> publishers = publisherRepository.findAllPublishers();
-        return publisherRepository.findAllPublishers();
+        return publishers;
     }
 
 }

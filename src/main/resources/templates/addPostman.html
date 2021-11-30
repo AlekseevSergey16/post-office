@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <title>Почтальоны</title>
+</head>
+<body>
+<h1>Почтальоны</h1>
+<form th:action="@{/postmen}" th:object="${postman}" method="post">
+    <div>
+        <label>Фамилия:</label><br>
+        <input type="text" th:field="*{lastName}" />
+    </div>
+    <div>
+        <label>Имя:</label><br>
+        <input type="text" th:field="*{firstName}" />
+    </div>
+    <div>
+        <label>Отчество:</label><br>
+        <input type="text" th:field="*{middleName}" />
+    </div><br>
+    <input type="submit" value="Добавить"/>
+</form>
+<table>
+    <thead>
+    <tr>
+        <th>Фамилия</th>
+        <th>Имя</th>
+        <th>Отчество</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="postman : ${postmen}">
+        <td th:text="${postman.lastName}"></td>
+        <td th:text="${postman.firstName}"></td>
+        <td th:text="${postman.middleName}"></td>
+        <td><a th:href="@{/postmen/{postmanId}/addresses(postmanId=${postman.id})}">Адреса</a></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -9,11 +9,11 @@ public class Publication {
 
     private String name;
     private String about;
+    private Publisher publisher;
     private Double cost;
     private Integer pages;
     private Integer weight;
-
-    private Publisher publisher;
+    private Integer periodicity;
 
     public Publication() {
     }
@@ -21,5 +21,4 @@ public class Publication {
     public Publication(Long id) {
         this.id = id;
     }
-
 }

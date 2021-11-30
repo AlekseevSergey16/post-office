@@ -3,8 +3,10 @@ package com.alekseev.postman.repository;
 import com.alekseev.postman.model.Subscriber;
 import com.alekseev.postman.model.Subscription;
 import com.alekseev.postman.repository.mapper.SubscriptionMapper;
+import org.simpleflatmapper.jdbc.spring.JdbcTemplateMapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -16,6 +18,11 @@ import java.util.Optional;
 @Repository
 public class SubscriberRepository {
 
+    public static final RowMapper<Subscriber> SUBSCRIBER_MAPPER = JdbcTemplateMapperFactory.newInstance()
+            .ignorePropertyNotFound().newRowMapper(Subscriber.class);
+    public static final RowMapper<Subscription> SUBSCRIPTION_MAPPER = JdbcTemplateMapperFactory.newInstance()
+            .ignorePropertyNotFound().newRowMapper(Subscription.class);
+
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -23,18 +30,18 @@ public class SubscriberRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public long insert(String firstName, String lastName, String middleName, String address, String phone, String email) {
+    public long insert(Subscriber subscriber) {
         final String sql = """
-                INSERT INTO subscriber (first_name, last_name, middle_name, address, phone, email)
+                INSERT INTO subscriber (first_name, last_name, middle_name, address_id, phone, email)
                 VALUES (:firstName, :lastName, :middleName, :address, :phone, :email)
                 """;
         var params = new MapSqlParameterSource()
-                .addValue("firstName", firstName)
-                .addValue("lastName", lastName)
-                .addValue("middleName", middleName)
-                .addValue("address", address)
-                .addValue("phone", phone)
-                .addValue("email", email);
+                .addValue("firstName", subscriber.getFirstName())
+                .addValue("lastName", subscriber.getLastName())
+                .addValue("middleName", subscriber.getMiddleName())
+                .addValue("address", subscriber.getAddress().getId()) //todo
+                .addValue("phone", subscriber.getPhone())
+                .addValue("email", subscriber.getEmail());
 
         var keyHolder = new GeneratedKeyHolder();
 
@@ -43,20 +50,39 @@ public class SubscriberRepository {
         return (long) keyHolder.getKeys().get("id");
     }
 
+    public Optional<Long> checkExistSubscriber(Subscriber subscriber) {
+        final String sql = """
+                SELECT id
+                FROM subscriber
+                WHERE subscriber.phone = :phone
+                  AND subscriber.email = :email
+                """;
+        var params = new MapSqlParameterSource()
+                .addValue("phone", subscriber.getPhone())
+                .addValue("email", subscriber.getEmail());
+
+        return jdbcTemplate.query(sql, params, (rs, rowNum) -> rs.getLong("id"))
+                .stream().findAny();
+    }
+
     public Optional<Subscriber> findById(long id) {
         final String sql = """
-                SELECT subscriber.id          AS sub_id,
-                       subscriber.first_name  AS sub_first_name,
-                       subscriber.last_name   AS sub_last_name,
-                       subscriber.middle_name AS sub_last_name,
-                       subscriber.address     AS sub_last_name,
-                       subscriber.phone       AS sub_last_name,
-                       subscriber.email       AS sub_last_name
+                SELECT subscriber.id,
+                       subscriber.first_name,
+                       subscriber.last_name,
+                       subscriber.middle_name,
+                       subscriber.phone,
+                       subscriber.email,
+                       address.id           AS address_id,
+                       address.street_name  AS address_street_name,
+                       address.house_number AS address_house_number
                 FROM subscriber
+                         INNER JOIN address ON subscriber.address_id = address.id
+                WHERE subscriber.id = ?
                 """;
 
         Optional<Subscriber> subscriber = Optional
-                .ofNullable(jdbcTemplate.getJdbcTemplate().queryForObject(sql, new BeanPropertyRowMapper<Subscriber>(), id));
+                .ofNullable(jdbcTemplate.getJdbcTemplate().queryForObject(sql, SUBSCRIBER_MAPPER, id));
         subscriber.ifPresent(sub -> sub.setSubscriptions(findSubscriptionBySubscriberId(id)));
 
         return jdbcTemplate.getJdbcTemplate().query(sql, new BeanPropertyRowMapper<Subscriber>(), id)
@@ -70,7 +96,7 @@ public class SubscriberRepository {
                        subscription.end_date,
                        subscription.number_of_months,
                        publication.id         AS publication_id,
-                       publication.name       AS publication_name,
+                       publication.publication_name,
                        publication.about,
                        publication.cost,
                        publication.pages,
@@ -83,7 +109,7 @@ public class SubscriberRepository {
         var params = new MapSqlParameterSource()
                 .addValue("subscriberId", subscriberId);
 
-        return jdbcTemplate.query(sql, params, SubscriptionMapper.MAPPER);
+        return jdbcTemplate.query(sql, params, SUBSCRIPTION_MAPPER);
     }
 
 }

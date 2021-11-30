@@ -3,13 +3,16 @@ package com.alekseev.postman.controller;
 import com.alekseev.postman.model.Publication;
 import com.alekseev.postman.model.Publisher;
 import com.alekseev.postman.service.PublicationService;
+import com.alekseev.postman.service.PublisherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-//@RequestMapping("/publications")
+@Controller
+@RequestMapping("/publications")
 public class PublicationController {
 
     private final PublicationService publicationService;
@@ -19,25 +22,26 @@ public class PublicationController {
         this.publicationService = publicationService;
     }
 
-    @GetMapping("/publications/{id}")
-    public Publication getPublicationById(@PathVariable long id) {
-        return publicationService.getPublication(id);
+    @GetMapping
+    public String getPublications(Model model) {
+        List<Publication> publications = publicationService.getPublications();
+        model.addAttribute("publications", publications);
+        return "publicationList";
     }
 
-    @GetMapping("/publishers/{publisherId}/publications")
-    public List<Publication> getPublicationsByPublisher(@PathVariable long publisherId) {
-        return publicationService.getPublicationsByPublisher(publisherId);
+    @GetMapping("/search-by-publisher")
+    public String getPublicationsByPublisher(@RequestParam long publisherId, Model model) {
+        model.addAttribute("publications", publicationService.getPublicationsByPublisher(publisherId));
+        model.addAttribute("publisherId", publisherId);
+        model.addAttribute("publication", new Publication());
+        return "addPublication";
     }
 
-    @PostMapping("/publishers/{publisherId}/publications")
-    public void createPublication(@PathVariable long publisherId, @RequestBody Publication publication) {
+    @PostMapping
+    public String createPublication(@ModelAttribute Publication publication, @RequestParam long publisherId) {
         publication.setPublisher(new Publisher(publisherId));
         publicationService.addPublication(publication);
-    }
-
-    @PutMapping
-    public void updatePublication(@RequestBody Publication publication) {
-        publicationService.updatePublication(publication);
+        return "redirect:/publications/search-by-publisher?publisherId="+ publisherId;
     }
 
 }

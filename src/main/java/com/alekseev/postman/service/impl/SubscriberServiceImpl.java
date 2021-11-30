@@ -6,6 +6,8 @@ import com.alekseev.postman.service.SubscriberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class SubscriberServiceImpl implements SubscriberService {
 
@@ -17,18 +19,18 @@ public class SubscriberServiceImpl implements SubscriberService {
     }
 
     @Override
-    public void addSubscriber(Subscriber subscriber) {
-        subscriberRepository.insert(subscriber.getFirstName(),
-                                    subscriber.getLastName(),
-                                    subscriber.getMiddleName(),
-                                    subscriber.getAddress(),
-                                    subscriber.getPhone(),
-                                    subscriber.getEmail());
+    public long addSubscriber(Subscriber subscriber) {
+        return subscriberRepository.insert(subscriber);
     }
 
     @Override
     public Subscriber getSubscriber(long id) {
         return subscriberRepository.findById(id)
                 .orElseThrow();
+    }
+
+    @Override
+    public Optional<Long> checkExistSubscriber(Subscriber subscriber) {
+        return subscriberRepository.checkExistSubscriber(subscriber);
     }
 }

@@ -6,8 +6,14 @@ import lombok.Data;
 public class Address {
 
     private Long id;
-    private String street;
+    private String streetName;
     private Integer houseNumber;
-    private Integer apartmentNumber;
+    private Long postmanId;
 
+    public Address() {
+    }
+
+    public Address(Long id) {
+        this.id = id;
+    }
 }

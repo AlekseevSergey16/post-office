@@ -13,7 +13,7 @@ public class Subscriber {
     private String firstName;
     private String lastName;
     private String middleName;
-    private String address;
+    private Address address;
     private String phone;
     private String email;
 

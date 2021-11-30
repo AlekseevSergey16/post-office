@@ -1,5 +1,6 @@
 package com.alekseev.postman.model.builder;
 
+import com.alekseev.postman.model.Address;
 import com.alekseev.postman.model.Subscriber;
 import com.alekseev.postman.model.Subscription;
 
@@ -11,7 +12,7 @@ public final class SubscriberBuilder {
     private String firstName;
     private String lastName;
     private String middleName;
-    private String address;
+    private Address address;
     private String phone;
     private String email;
     private List<Subscription> subscriptions;
@@ -43,7 +44,7 @@ public final class SubscriberBuilder {
         return this;
     }
 
-    public SubscriberBuilder address(String address) {
+    public SubscriberBuilder address(Address address) {
         this.address = address;
         return this;
     }

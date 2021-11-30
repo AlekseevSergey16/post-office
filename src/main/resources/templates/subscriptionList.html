@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <title>Подписки</title>
+</head>
+<body>
+<h1>Подписки</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Публикация</th>
+        <th>Кол-во месяцев</th>
+        <th>Дата начала</th>
+        <th>Дата окончания</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="subscription : ${subscriptions}">
+        <td th:text="${subscription.publication.name}"></td>
+        <td th:text="${subscription.numberOfMonths}"></td>
+        <td th:text="${subscription.startDate}"></td>
+        <td th:text="${subscription.endDate}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
