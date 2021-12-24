@@ -10,11 +10,11 @@
 <form th:action="@{/subscriptions(publicationId=${publicationId})}" th:object="${subscription}" method="post" class="col card p-3 my-5">
     <div>
         <label class="form-group">Фамилия:</label><br>
-        <input type="text" th:field="*{firstName}" class="form-control"/>
+        <input type="text" th:field="*{lastName}" class="form-control"/>
     </div>
     <div>
         <label class="form-group">Имя:</label><br>
-        <input type="text" th:field="*{lastName}" class="form-control"/>
+        <input type="text" th:field="*{firstName}" class="form-control"/>
     </div>
     <div>
         <label class="form-group">Отчество:</label><br>
@@ -37,7 +37,7 @@
         <select required th:field="*{addressId}" class="form-control">
             <option th:each="address : ${addresses}"
                     th:value="${address.id}"
-                    th:text="${address.streetName}"></option>
+                    th:text="${address.streetName}+ ', ' + ${address.houseNumber}"></option>
         </select>
     </div><br>
 <!--    <input type="submit" value="Подписаться"/>-->

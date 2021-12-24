@@ -33,4 +33,9 @@ public class PostmanServiceImpl implements PostmanService {
         return postmanRepository.findAll();
     }
 
+    @Override
+    public void deletePostman(long id) {
+        postmanRepository.delete(id);
+    }
+
 }

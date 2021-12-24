@@ -5,29 +5,34 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <title>Почтальоны</title>
 </head>
-<body>
+<body class="container">
 <h1>Почтальоны</h1>
-<form th:action="@{/postmen}" th:object="${postman}" method="post">
+<form th:action="@{/postmen}" th:object="${postman}" method="post" class="col card p-3 my-5">
     <div>
         <label>Фамилия:</label><br>
-        <input type="text" th:field="*{lastName}" />
+        <input class="form-control" type="text" th:field="*{lastName}" />
     </div>
     <div>
         <label>Имя:</label><br>
-        <input type="text" th:field="*{firstName}" />
+        <input class="form-control" type="text" th:field="*{firstName}" />
     </div>
     <div>
         <label>Отчество:</label><br>
-        <input type="text" th:field="*{middleName}" />
+        <input class="form-control" type="text" th:field="*{middleName}" />
     </div><br>
-    <input type="submit" value="Добавить"/>
+    <div class="col-xs-offset-2 col-xs-10">
+        <button type="submit" class="btn btn-primary">Добавить</button>
+    </div>
 </form>
-<table>
+<table class="table table-striped table-bordered">
     <thead>
     <tr>
         <th>Фамилия</th>
         <th>Имя</th>
         <th>Отчество</th>
+        <th>Адреса</th>
+        <th>Подписки</th>
+        <th>Удаление</th>
     </tr>
     </thead>
     <tbody>
@@ -36,6 +41,10 @@
         <td th:text="${postman.firstName}"></td>
         <td th:text="${postman.middleName}"></td>
         <td><a th:href="@{/postmen/{postmanId}/addresses(postmanId=${postman.id})}">Адреса</a></td>
+        <td><a th:href="@{/subscriptions/subscriptions-by-postman(postmanId=${postman.id})}">Подписки</a></td>
+        <td><form th:action="@{/postmen/{postmanId}(postmanId=${postman.id})}" th:method="delete">
+            <button type="submit" class="btn btn-danger">Удалить</button>
+        </form></td>
     </tr>
     </tbody>
 </table>

@@ -64,4 +64,18 @@ public class SubscriptionController {
         return "subscriptionList";
     }
 
+    @GetMapping("/subscriptions-by-postman")
+    public String showSubscriptionByPostman(@RequestParam long postmanId, Model model) {
+        List<Subscription> subscriptions = subscriptionService.getSubscriptionsByPostman(postmanId);
+        model.addAttribute("subscriptions", subscriptions);
+
+        return "subscriptionList";
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteSubscription(@PathVariable long id) {
+        subscriptionService.deleteSubscription(id);
+        return "redirect:/";
+    }
+
 }

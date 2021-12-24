@@ -5,10 +5,7 @@ import com.alekseev.postman.service.PublisherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,6 +31,21 @@ public class PublisherController {
     @PostMapping
     public String createPublishers(@ModelAttribute Publisher publisher) {
         publisherService.addPublisher(publisher);
+        return "redirect:/publishers";
+    }
+
+    @GetMapping("/update")
+    public String showUpdatePublisherForm(@RequestParam long publisherId, Model model)  {
+        Publisher publisher = publisherService.getPublisher(publisherId);
+        model.addAttribute("publisher", publisher);
+        model.addAttribute("newPublisher", new Publisher());
+        return "update-publisher-form";
+    }
+
+    @PutMapping("/{id}")
+    public String updatePublisher(@PathVariable long id, @ModelAttribute Publisher publisher) {
+        publisher.setId(id);
+        publisherService.updatePublisher(publisher);
         return "redirect:/publishers";
     }
 

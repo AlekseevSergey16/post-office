@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+          crossorigin="anonymous">
+    <title>Update Publisher</title>
+</head>
+<body class="container">
+<h1>Измение издания</h1>
+<form th:action="@{/publications/{id}(id=${publication.id})}" th:object="${updPublication}" th:method="put" class="col card p-3 my-5">
+    <div>
+        <label>Название:</label><br>
+        <input class="form-control" type="text" name="name" th:value="${publication.name}" />
+    </div>
+    <div>
+        <label>Информация:</label><br>
+        <input class="form-control" type="text" name="about" th:value="${publication.about}" />
+    </div>
+    <div>
+        <label>Стоимость:</label><br>
+        <input class="form-control" type="text" name="cost" th:value="${publication.cost}" />
+    </div>
+    <div>
+        <label>Кол-во страниц:</label><br>
+        <input class="form-control" type="text" name="pages" th:value="${publication.pages}" />
+    </div>
+    <div>
+        <label>Вес:</label><br>
+        <input class="form-control" type="text" name="weight" th:value="${publication.weight}" />
+    </div>
+    <div>
+        <label>Периодичность:</label><br>
+        <input class="form-control" type="text" name="periodicity" th:value="${publication.periodicity}" />
+    </div><br>
+    <div class="col-xs-offset-2 col-xs-10">
+        <button type="submit" class="btn btn-success">Изменить</button>
+    </div>
+</form>
+</body>
+</html>

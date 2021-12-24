@@ -8,5 +8,7 @@ public interface SubscriptionService {
 
     void addSubscription(Subscription subscription);
     List<Subscription> getSubscriptionsBySubscriber(long subscriberId);
+    void deleteSubscription(long id);
+    List<Subscription> getSubscriptionsByPostman(long postmanId);
 
 }

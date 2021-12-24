@@ -3,7 +3,6 @@ package com.alekseev.postman.controller;
 import com.alekseev.postman.model.Publication;
 import com.alekseev.postman.model.Publisher;
 import com.alekseev.postman.service.PublicationService;
-import com.alekseev.postman.service.PublisherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,6 +41,23 @@ public class PublicationController {
         publication.setPublisher(new Publisher(publisherId));
         publicationService.addPublication(publication);
         return "redirect:/publications/search-by-publisher?publisherId="+ publisherId;
+    }
+
+    @GetMapping("/update")
+    public String showUpdatePublicationForm(@RequestParam long publicationId, Model model) {
+        Publication publication = publicationService.getPublication(publicationId);
+        model.addAttribute("publication", publication);
+        model.addAttribute("updPublication", new Publication());
+
+        return "update-publication-form";
+    }
+
+    @PutMapping("/{id}")
+    public String updatePublication(@PathVariable long id, @ModelAttribute Publication publication) {
+        publication.setId(id);
+        publicationService.updatePublication(publication);
+        Publication updPublication = publicationService.getPublication(id);
+        return "redirect:/publications/search-by-publisher?publisherId="+ updPublication.getPublisher().getId();
     }
 
 }

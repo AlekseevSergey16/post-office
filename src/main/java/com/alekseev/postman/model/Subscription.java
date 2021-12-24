@@ -8,11 +8,10 @@ import java.time.LocalDate;
 public class Subscription {
 
     private Long id;
-
     private Integer numberOfMonths;
-
     private LocalDate startDate;
     private LocalDate endDate;
+    private Integer costTotal;
 
     private Subscriber subscriber;
 

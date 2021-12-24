@@ -7,6 +7,7 @@ import com.alekseev.postman.service.SubscriberService;
 import com.alekseev.postman.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +25,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
+    @Transactional
     public void addSubscription(Subscription subscription) {
         Subscriber subscriber = subscription.getSubscriber();
         Optional<Long> optionalId = subscriberService.checkExistSubscriber(subscriber);
@@ -41,6 +43,16 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public List<Subscription> getSubscriptionsBySubscriber(long subscriberId) {
         return subscriptionRepository.findBySubscriberId(subscriberId);
+    }
+
+    @Override
+    public void deleteSubscription(long id) {
+        subscriptionRepository.delete(id);
+    }
+
+    @Override
+    public List<Subscription> getSubscriptionsByPostman(long postmanId) {
+        return subscriptionRepository.findSubscriptionByPostmanId(postmanId);
     }
 
 }

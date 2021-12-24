@@ -5,20 +5,22 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <title>Адреса</title>
 </head>
-<body>
+<body class="container">
 <h1>Адреса</h1>
-<form th:action="@{/postmen/{postmanId}/addresses(postmanId=${postmanId})}" th:object="${address}" method="post">
+<form th:action="@{/postmen/{postmanId}/addresses(postmanId=${postmanId})}" th:object="${address}" method="post" class="col card p-3 my-5">
     <div>
         <label>Улица:</label><br>
-        <input type="text" th:field="*{streetName}" />
+        <input class="form-control" type="text" th:field="*{streetName}" />
     </div>
     <div>
         <label>Дом:</label><br>
-        <input type="text" th:field="*{houseNumber}" />
+        <input class="form-control" type="text" th:field="*{houseNumber}" />
     </div><br>
-    <input type="submit" value="Добавить"/>
+    <div class="col-xs-offset-2 col-xs-10">
+        <button type="submit" class="btn btn-primary">Добавить</button>
+    </div>
 </form>
-<table>
+<table class="table table-striped table-bordered">
     <thead>
     <tr>
         <th>Улица</th>
